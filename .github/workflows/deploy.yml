@@ -1,0 +1,54 @@
+name: Deploy to GitHub Pages
+
+# Runs on every push to main, and can be triggered manually from the Actions tab.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Permissions the deploy needs.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let only one deploy run at a time; newer pushes supersede older runs.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      # Regenerates data/credits.json and the data block inside index.html
+      # from build_data.py, so editing build_data.py alone is enough.
+      - name: Regenerate data
+        run: python build_data.py
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
