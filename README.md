@@ -2,6 +2,8 @@
 
 **Pick who you are → see which IRA clean-energy tax credits you still qualify for, what they're worth, who's eligible, and how much time is left to claim them.**
 
+![Clean Energy Credit Finder](screenshot.png)
+
 The Inflation Reduction Act (IRA) created a suite of clean-energy tax credits. The **One Big Beautiful Bill Act (OBBBA)**, signed July 4, 2025, cut most of their timelines short — repealing some early, shortening others, and improving or extending a few. This tool translates that mess into a single question: *given who you are, what's still available and when does it close?*
 
 It's a single-page static site — **everything is inlined in one `index.html`** (styles, data, and logic), so there are no dependencies and nothing to build. Open the file and it works.
